@@ -1,68 +1,68 @@
-const State = {
+const DoorState = {
     UNKNOWN: 0,
     CHOSEN: 1,
-    EMPTY: 2
+    GOAT: 2
 };
 
-let boxes = Array(3)
+const doors = Array(3)
 let prizeIndex = 0
 
 const reset = () => {
-    boxes = boxes.fill(State.UNKNOWN)
-    prizeIndex = pickRandomIndex(boxes.length)
+    doors.fill(DoorState.UNKNOWN)
+    prizeIndex = pickRandomIndex(doors.length)
 }
 
 const pickRandomIndex = (len) => Math.floor(Math.random() * len);
 
-const chooseBox = () => {
-    boxes[pickRandomIndex(boxes.length)] = State.CHOSEN
+const chooseDoor = () => {
+    doors[pickRandomIndex(doors.length)] = DoorState.CHOSEN
 }
 
-const revealBox = () => {
-    // Monty can only choose an empty box that the player hasn't chosen
-    // There could be one or two
-    const choices = boxes.reduce((res, box, idx) => {
-        if (box === State.UNKNOWN && idx !== prizeIndex) {
+const revealDoor = () => {
+    // Monty can only choose a door that the player hasn't chosen
+    // and that doesn't have the prize. There could be one or two
+    const choices = doors.reduce((res, door, idx) => {
+        if (door === DoorState.UNKNOWN && idx !== prizeIndex) {
             res.push(idx)
         }
         return res
     }, [])
     const idx = choices[pickRandomIndex(choices.length)]
-    boxes[idx] = State.EMPTY
+    doors[idx] = DoorState.GOAT
 }
 
-const switchBox = () => {
-    const chosenBoxIdx = boxes.findIndex(e => e === State.CHOSEN)
-    const availableBoxIdx = boxes.findIndex(e => e === State.UNKNOWN)
-    boxes[chosenBoxIdx] = State.UNKNOWN
-    boxes[availableBoxIdx] = State.CHOSEN
+const switchDoor = () => {
+    const chosenDoorIdx = doors.findIndex(e => e === DoorState.CHOSEN)
+    const availableDoorIdx = doors.findIndex(e => e === DoorState.UNKNOWN)
+    doors[chosenDoorIdx] = DoorState.UNKNOWN
+    doors[availableDoorIdx] = DoorState.CHOSEN
 }
 
-const result = () => boxes[prizeIndex] === State.CHOSEN
+const result = () => DoorState.CHOSEN === doors[prizeIndex]
 
 // expected value: 1/3
-function  montyHallWithoutSwitch(size) {
+const montyHallWithoutSwitch = (limit) => {
     let count = 0
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < limit; i++) {
         reset()
-        chooseBox()
-        revealBox()
+        chooseDoor()
+        // reveal omitted since we're not switching anyway
         count += result()
     }
-    return count / size
+    return count / limit
 }
 
-// expected value 2/3
-function montyHallWithSwitch(size) {
+// expected value: 2/3
+const montyHallWithSwitch = (limit) => {
     let count = 0
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < limit; i++) {
         reset()
-        chooseBox()
-        revealBox()
-        switchBox()
+        chooseDoor()
+        revealDoor()
+        switchDoor()
         count += result()
     }
-    return count / size
+    return count / limit
 }
 
 console.log(montyHallWithoutSwitch(1000))
