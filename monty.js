@@ -42,27 +42,27 @@ const wonPrize = () => DoorState.CHOSEN === doors[prizeIndex]
 
 // expected value: 1/3
 const montyHallWithoutSwitch = (limit) => {
-    let count = 0
+    let countWins = 0
     for (let i = 0; i < limit; i++) {
         reset()
         chooseDoor()
         // reveal omitted since we're not switching anyway
-        count += wonPrize()
+        countWins += wonPrize()
     }
-    return count / limit
+    return countWins / limit
 }
 
 // expected value: 2/3
 const montyHallWithSwitch = (limit) => {
-    let count = 0
+    let countWins = 0
     for (let i = 0; i < limit; i++) {
         reset()
         chooseDoor()
         revealDoor()
         switchDoor()
-        count += wonPrize()
+        countWins += wonPrize()
     }
-    return count / limit
+    return countWins / limit
 }
 
 console.log(montyHallWithoutSwitch(1000))
