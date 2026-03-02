@@ -32,37 +32,37 @@ const revealDoor = () => {
 }
 
 const switchDoor = () => {
-    const chosenDoorIdx = doors.findIndex(e => e === DoorState.CHOSEN)
-    const availableDoorIdx = doors.findIndex(e => e === DoorState.UNKNOWN)
-    doors[chosenDoorIdx] = DoorState.UNKNOWN
-    doors[availableDoorIdx] = DoorState.CHOSEN
+    const chosenDoor = doors.findIndex(e => e === DoorState.CHOSEN)
+    const availableDoor = doors.findIndex(e => e === DoorState.UNKNOWN)
+    doors[chosenDoor] = DoorState.UNKNOWN
+    doors[availableDoor] = DoorState.CHOSEN
 }
 
 const wonPrize = () => DoorState.CHOSEN === doors[prizeIndex]
 
 // expected value: 1/3
-const montyHallWithoutSwitch = (limit) => {
+const montyHallWithoutSwitch = (numPlays) => {
     let countWins = 0
-    for (let i = 0; i < limit; i++) {
+    for (let i = 0; i < numPlays; i++) {
         reset()
         chooseDoor()
         // reveal omitted since we're not switching anyway
         countWins += wonPrize()
     }
-    return countWins / limit
+    return countWins / numPlays
 }
 
 // expected value: 2/3
-const montyHallWithSwitch = (limit) => {
+const montyHallWithSwitch = (numPlays) => {
     let countWins = 0
-    for (let i = 0; i < limit; i++) {
+    for (let i = 0; i < numPlays; i++) {
         reset()
         chooseDoor()
         revealDoor()
         switchDoor()
         countWins += wonPrize()
     }
-    return countWins / limit
+    return countWins / numPlays
 }
 
 console.log(montyHallWithoutSwitch(1000))
