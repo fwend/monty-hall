@@ -38,7 +38,7 @@ const switchDoor = () => {
     doors[availableDoorIdx] = DoorState.CHOSEN
 }
 
-const result = () => DoorState.CHOSEN === doors[prizeIndex]
+const wonPrize = () => DoorState.CHOSEN === doors[prizeIndex]
 
 // expected value: 1/3
 const montyHallWithoutSwitch = (limit) => {
@@ -47,7 +47,7 @@ const montyHallWithoutSwitch = (limit) => {
         reset()
         chooseDoor()
         // reveal omitted since we're not switching anyway
-        count += result()
+        count += wonPrize()
     }
     return count / limit
 }
@@ -60,7 +60,7 @@ const montyHallWithSwitch = (limit) => {
         chooseDoor()
         revealDoor()
         switchDoor()
-        count += result()
+        count += wonPrize()
     }
     return count / limit
 }
