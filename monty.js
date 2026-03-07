@@ -65,5 +65,5 @@ const montyHallWithSwitch = (numPlays) => {
     return countWins / numPlays
 }
 
-console.log(montyHallWithoutSwitch(1000))
-console.log(montyHallWithSwitch(1000))
+console.log("Mont Hall without switch, expected value ~0.33: ", montyHallWithoutSwitch(1000))
+console.log("Monty Hall with switch, expected value ~0.67: ", montyHallWithSwitch(1000))
